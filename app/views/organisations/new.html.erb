@@ -1,0 +1,32 @@
+<h1><%= link_to "Adnat", organisations_path%></h1>
+
+Logged in as <strong><%= current_user.name %></strong>
+
+<% if user_signed_in? %>
+  <li>
+    <%= link_to('Logout', destroy_user_session_path, method: :delete) %>
+    <%= link_to('Edit Account', edit_user_path, method: :get) %>
+  </li>
+<% else %>
+  <li>
+    <%= link_to('Login', new_user_session_path) %>
+  </li>
+<% end %>
+
+<br>
+<h2><strong>New Organisation </strong></h2>
+
+<% if flash[:errors]%>
+  <% flash[:errors].each do |error|%>
+    <p style="color: red"><%= error%></p>
+  <%end%>
+<%end%>
+
+<%= form_with model: @organisation do |f|%>
+  <%= f.label :name%>
+  <%= f.text_field :name %>
+  <%= f.label :hourly_rate%>
+  <%= f.number_field :hourly_rate, step: :any %>
+
+  <%= f.submit%>
+<%end%>

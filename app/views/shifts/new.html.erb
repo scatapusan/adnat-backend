@@ -1,0 +1,64 @@
+<h1><%= link_to "Adnat", organisations_path%></h1>
+
+Logged in as <strong><%= current_user.name %></strong>
+
+<% if user_signed_in? %>
+  <li>
+    <%= link_to('Edit Account', edit_user_registration_path, method: :get) %>
+  </li>
+  <li>
+    <%= link_to('Logout', destroy_user_session_path, method: :delete) %>
+  </li>
+<% else %>
+  <li>
+    <%= link_to('Login', new_user_session_path) %>
+  </li>
+
+<% end %>
+
+<% if flash[:errors]%>
+  <% flash[:errors].each do |error|%>
+    <p style="color: red"><%= error%></p>
+  <%end%>
+<%end%>
+
+<h2> <%= current_user.organisation.name %></h2>
+<h3>Shifts</h3>
+<%= form_with model: @shift do |f|%>
+
+  <table class="table table-bordered table-striped">
+    <th>Employee Name</th>
+    <th>Shift Date</th>
+    <th>Start Time</th>
+    <th>Finish Time</th>
+    <th>Break Length (minutes)</th>
+    <th>Hours Worked</th>
+    <th>Shift Cost</th>
+  <% @shifts.each do |shift|%>
+    <tr>
+      <td><%= shift.user.name %>
+      </td><td><%= shift.date %></td>
+      <td><%= shift.start_time %></td>
+      <td><%= shift.finish_time %></td>
+      <td><%= shift.break_length %></td>
+      <td><%= shift.hours_worked %></td>
+      <td>$<%= shift.shift_cost %></td>
+    </tr>
+  <%end%>
+  <%= f.hidden_field :user, :value => current_user.id %>
+    <tr><td><%= current_user.name %></td>
+    <td><%= f.text_field :date %></td>
+    <td><%= f.text_field :start %></td>
+    <td><%= f.text_field :finish %></td>
+    <td><%= f.number_field :break_length %></td>
+    <td></td>
+    <td><%= f.submit%></td></tr>
+
+
+
+
+
+  </table>
+<%end%>
+
+

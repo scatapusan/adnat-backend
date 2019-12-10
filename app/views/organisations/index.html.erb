@@ -1,0 +1,41 @@
+
+<h1><%= link_to "Adnat", organisations_path%></h1>
+
+Logged in as <strong><%= current_user.name %></strong>
+
+<% if user_signed_in? %>
+  <li>
+    <%= link_to('Edit Account', edit_user_registration_path, method: :get) %>
+  </li>
+  <li>
+    <%= link_to('Logout', destroy_user_session_path, method: :delete) %>
+  </li>
+<% else %>
+  <li>
+    <%= link_to('Login', new_user_session_path) %>
+  </li>
+<% end %>
+
+<% if current_user.organisation  %>
+
+  <h2><strong><%= current_user.organisation.name %></strong></h2>
+  <%= link_to "View Shifts", new_shift_path %> <%= link_to "Edit", edit_organisation_path(current_user.organisation)%> <%= link_to "Leave", edit_user_path(current_user, organisation: nil )%>
+
+
+
+<% else %>
+
+  <h2>Organisations</h2>
+  <ul>
+    <% @organisations.each do |organisation|%>
+      <li><%= organisation.name %> <%= link_to "Edit", edit_organisation_path(organisation)%> <%= link_to "Join", edit_user_path(current_user, organisation: organisation)%></li>
+    <%end%>
+  </ul>
+
+  <%= button_to "Create New Organisation", new_organisation_path, method: :get %>
+
+<% end %>
+
+
+
+
